@@ -13,12 +13,7 @@ const swaggerConfig = {
     },
     servers: [
       {
-        url: "http://localhost:3000",
-        description: "Development server",
-      },
-      {
-        url: "https://api.tinderclone.com",
-        description: "Production server",
+        url: '/', 
       },
     ],
     components: {

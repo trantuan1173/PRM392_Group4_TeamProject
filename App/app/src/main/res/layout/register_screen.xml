@@ -44,7 +44,7 @@
     <EditText
         android:id="@+id/nameInput"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="38dp"
         android:hint="Your name"
         android:background="@drawable/edit_text_background"
         android:paddingStart="16dp"
@@ -65,8 +65,8 @@
     <EditText
         android:id="@+id/emailInput"
         android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="36dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/edit_text_background"
         android:hint="your@email.com"
         android:inputType="textEmailAddress"
@@ -87,8 +87,8 @@
     <EditText
         android:id="@+id/passwordInput"
         android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="44dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/edit_text_background"
         android:hint="Password"
         android:inputType="textPassword"
@@ -110,8 +110,8 @@
     <EditText
         android:id="@+id/confirmPasswordInput"
         android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="48dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/edit_text_background"
         android:hint="Confirm Password"
         android:inputType="textPassword"
@@ -122,6 +122,51 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/passwordInput" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm Password"
+        app:layout_constraintBottom_toTopOf="@+id/confirmPasswordInput"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Register Button -->
+    <EditText
+        android:id="@+id/genderInput"
+        android:layout_width="0dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/edit_text_background"
+        android:hint="Gender"
+        android:inputType="textPassword"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/passwordInput" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm Password"
+        app:layout_constraintBottom_toTopOf="@+id/confirmPasswordInput"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Register Button -->
+    <EditText
+        android:id="@+id/ageInput"
+        android:layout_width="0dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/edit_text_background"
+        android:hint="Confirm Password"
+        android:inputType="textPassword"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/passwordInput" />
     <Button
         android:id="@+id/registerButton"
         android:layout_width="0dp"
