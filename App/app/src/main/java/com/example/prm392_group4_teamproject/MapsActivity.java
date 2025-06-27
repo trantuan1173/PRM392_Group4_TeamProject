@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,14 +16,20 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
-
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationClient;
+    private LocationCallback locationCallback;
+    private LocationRequest locationRequest;
+    private Marker userMarker;
+    private Bitmap avatarBitmap;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     @Override
@@ -31,6 +38,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.friend_map_screen);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        avatarBitmap = getCircularAvatarBitmap(); // Tạo avatar 1 lần duy nhất
 
         SupportMapFragment mapFragment = (SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.mapFragment);
@@ -48,35 +56,42 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    this,
+            ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    LOCATION_PERMISSION_REQUEST_CODE
-            );
+                    LOCATION_PERMISSION_REQUEST_CODE);
         } else {
-            showCurrentLocation();
+            startLocationUpdates();
         }
     }
 
     @SuppressLint("MissingPermission")
-    private void showCurrentLocation() {
-        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
-            if (location != null) {
+    private void startLocationUpdates() {
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10000); // cập nhật mỗi 5 giây
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) return;
+                Location location = locationResult.getLastLocation();
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-                Bitmap avatarBitmap = getCircularAvatarBitmap();
-                MarkerOptions markerOptions = new MarkerOptions()
-                        .position(latLng)
-                        .title("Bạn đang ở đây")
-                        .icon(BitmapDescriptorFactory.fromBitmap(avatarBitmap));
-
-                mMap.addMarker(markerOptions);
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                if (userMarker == null) {
+                    userMarker = mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title("Bạn đang ở đây")
+                            .icon(BitmapDescriptorFactory.fromBitmap(avatarBitmap)));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                } else {
+                    userMarker.setPosition(latLng);
+                }
             }
-        });
+        };
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
     }
 
-    // Tạo ảnh tròn có viền trắng
     private Bitmap getCircularAvatarBitmap() {
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.avataaaa);
         int size = 120;
@@ -115,7 +130,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return bitmap;
     }
 
-    // Gọi lại nếu người dùng cấp quyền
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
@@ -124,7 +138,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE
                 && grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            showCurrentLocation();
+            startLocationUpdates();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (fusedLocationClient != null && locationCallback != null) {
+            fusedLocationClient.removeLocationUpdates(locationCallback);
         }
     }
 }
