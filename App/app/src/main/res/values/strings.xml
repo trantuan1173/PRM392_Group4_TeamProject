@@ -3,4 +3,10 @@
     <string name="boost_button_desc">Boost</string>
     <string name="dislike_button_desc">Dislike</string>
     <string name="like_button_desc">Like</string>
+    <string-array name="gender_options">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
 </resources>
+

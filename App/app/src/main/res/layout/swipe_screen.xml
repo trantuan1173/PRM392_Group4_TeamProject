@@ -97,5 +97,15 @@
             android:src="@drawable/boot"
             android:contentDescription="@string/boost_button_desc" />
     </LinearLayout>
+    <Button
+        android:id="@+id/goToRegisterButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đăng ký"
+        android:layout_margin="16dp"
+        android:backgroundTint="#6200EE"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
