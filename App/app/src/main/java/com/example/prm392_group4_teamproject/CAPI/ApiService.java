@@ -7,8 +7,17 @@ import retrofit2.http.*;
 public interface ApiService {
     @POST("/api/auth/register")
     Call<Void> registerUser(@Body RegisterRequest request);
+
     @POST("/api/auth/login")
-    Call<Void> loginUser(@Body LoginRequest request);
+    Call<LoginResponse> loginUser(@Body LoginRequest request);
+
+    @GET("/api/users/profile")
+    Call<ProfileResponse> getProfile();
+
+    @PUT("/api/users/profile")
+    Call<Void> updateProfile(@Body ProfileRequest request);
+
+
 }
 
 
