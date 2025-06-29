@@ -18,12 +18,21 @@
         tools:targetApi="31">
         <activity
             android:name=".MapsActivity"
-            android:exported="true">
+            android:exported="false">
+
+        </activity>
+
+        <activity android:name=".LocationPermisstionActivity"
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".DetailFriendActivity" android:exported="false">
+
         </activity>
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCsSPp2vj3uEo4wgp2wwkj051CLr04NeFE"/>

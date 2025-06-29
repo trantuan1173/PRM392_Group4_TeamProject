@@ -12,9 +12,7 @@
         android:layout_height="match_parent"
         tools:context=".MapsActivity">
 
-        <!-- ✅ Thay thế MapView bằng WebView -->
 
-        <!-- Top Search + Avatar -->
 
         <fragment
             android:id="@+id/mapFragment"
@@ -65,7 +63,7 @@
         <!-- Nearby Friends Section -->
         <LinearLayout
             android:id="@+id/nearbySection"
-            android:layout_width="414dp"
+            android:layout_width="match_parent"
             android:layout_height="176dp"
             android:background="#FFFFFF"
             android:elevation="6dp"
