@@ -3,7 +3,7 @@ package com.example.prm392_group4_teamproject;
 import java.util.List;
 
 public class User {
-    private String _id; // 👈 THÊM
+    private String _id;
     private String name;
     private int age;
     private String gender;
@@ -28,7 +28,6 @@ public class User {
 
     }
 
-    // ✅ Getter & Setter cho _id
     public String getId() {
         return _id;
     }
@@ -37,7 +36,6 @@ public class User {
         this._id = _id;
     }
 
-    // Các getter & setter khác vẫn giữ nguyên:
     public String getName() {
         return name;
     }

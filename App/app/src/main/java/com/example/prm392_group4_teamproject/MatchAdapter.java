@@ -53,7 +53,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
             }
         }
 
-        // 👉 Xử lý sự kiện khi nhấn btnCall
+
         holder.btnCall.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailFriendActivity.class);
             intent.putExtra("userId", user.getId()); // hoặc putExtra các dữ liệu khác cần thiết

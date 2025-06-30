@@ -112,7 +112,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         matchList.add(item);
                         matchAdapter.notifyItemInserted(matchList.size() - 1);
 
-                        // ✅ Nếu có location
                         if (user.getLocation() != null && user.getLocation().getCoordinates() != null) {
                             List<Double> coords = user.getLocation().getCoordinates();
                             if (coords.size() >= 2) {
@@ -120,12 +119,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 double lat = coords.get(1);
                                 LatLng matchLatLng = new LatLng(lat, lng);
 
-                                // ✅ Nếu avatar null → dùng ảnh drawable
                                 if (user.getAvatar() == null || user.getAvatar().isEmpty()) {
                                     Bitmap avatarBitmap = getCircularAvatarBitmapFromDrawable(R.drawable.boot);
                                     addMarkerWithAvatar(matchLatLng, user.getName(), avatarBitmap);
                                 } else {
-                                    // ✅ Load avatar từ URL bằng Glide
                                     Glide.with(MapsActivity.this)
                                             .asBitmap()
                                             .load(user.getAvatar())

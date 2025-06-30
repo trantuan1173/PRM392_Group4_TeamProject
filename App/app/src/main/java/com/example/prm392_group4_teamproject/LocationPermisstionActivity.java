@@ -35,7 +35,7 @@ public class LocationPermisstionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.location_permission); // Đặt đúng tên file XML
+        setContentView(R.layout.location_permission);
 
         allowButton = findViewById(R.id.allowButton);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
