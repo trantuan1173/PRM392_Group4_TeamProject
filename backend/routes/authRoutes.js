@@ -79,7 +79,7 @@ router.post(
     body("name").trim().isLength({ min: 2, max: 50 }).withMessage("Name must be between 2 and 50 characters"),
     body("email").isEmail().normalizeEmail().withMessage("Please provide a valid email"),
     body("password").isLength({ min: 6 }).withMessage("Password must be at least 6 characters long"),
-    body("age").isInt({ min: 18, max: 100 }).withMessage("Age must be between 18 and 100"),
+    body("dob").isDate().withMessage("DOB must be a valid date"),
     body("gender").isIn(["male", "female", "other"]).withMessage("Gender must be male, female, or other"),
     body("bio").optional().isLength({ max: 500 }).withMessage("Bio must not exceed 500 characters"),
   ],
