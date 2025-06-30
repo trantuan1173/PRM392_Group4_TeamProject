@@ -44,7 +44,8 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
             holder.imgAvatar.setImageResource(R.drawable.avataaaa);
         } else {
             holder.tvName.setText(user.getName());
-            holder.tvDistance.setText("1km · Example location");
+            holder.tvDistance.setText(user.getDistanceText() + " · Distance location");
+
 
             if (user.getAvatar() == null || user.getAvatar().isEmpty()) {
                 holder.imgAvatar.setImageResource(R.drawable.avataaaa);

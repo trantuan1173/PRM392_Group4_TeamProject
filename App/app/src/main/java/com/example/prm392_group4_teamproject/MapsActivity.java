@@ -25,7 +25,6 @@ import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.location.*;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +45,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private RecyclerView rvNearby;
     private MatchAdapter matchAdapter;
     private List<MatchItem> matchList;
-    private final String token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVjZTY5MDUyN2EzYjU0YzRiN2M4ZGEiLCJpYXQiOjE3NTEyMTI2NjIsImV4cCI6MTc1MTgxNzQ2Mn0.XJQ6iKbHf8tXudX6Fhr2ES-hPvEdbQQLyZGynMX8FDI"; // Đổi lại token của bạn
+    private final String token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVjZTY5MDUyN2EzYjU0YzRiN2M4ZGEiLCJpYXQiOjE3NTEzMDU4NDIsImV4cCI6MTc1MTkxMDY0Mn0.QYHb2gNk203sV-op-3PavCV742Esgm2-5iKoZmDWAHk";
 
+    private double currentLat = 0;
+    private double currentLng = 0;
+    private boolean hasLoadedMatches = false;
+
+    // Thêm biến điều hướng
+    private double targetLat = 0;
+    private double targetLng = 0;
+    private String targetName = null;
+    private boolean isNavigateMode = false;
+
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,11 +72,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         matchAdapter = new MatchAdapter(this, matchList);
         rvNearby.setAdapter(matchAdapter);
 
+        // Lấy dữ liệu điều hướng nếu có
+        targetLat = getIntent().getDoubleExtra("targetLat", 0);
+        targetLng = getIntent().getDoubleExtra("targetLng", 0);
+        targetName = getIntent().getStringExtra("targetName");
+        isNavigateMode = targetLat != 0 && targetLng != 0;
+
         SupportMapFragment mapFragment = (SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.mapFragment);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
+        LocationHelper.updateLocationToServer(this, fusedLocationClient, token);
     }
 
     private void loadMatches() {
@@ -77,8 +94,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onResponse(Call<MatchResponse> call, Response<MatchResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    matchList.clear(); // Xoá hết để nạp mới
-
+                    matchList.clear();
                     List<MatchItem> rawMatches = response.body().getMatches();
                     for (MatchItem item : rawMatches) {
                         OtherUserLite other = item.getOtherUser();
@@ -108,17 +124,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (response.isSuccessful() && response.body() != null) {
                     User user = response.body().getUser();
                     if (user != null) {
-                        MatchItem item = new MatchItem(user);
-                        matchList.add(item);
-                        matchAdapter.notifyItemInserted(matchList.size() - 1);
-
                         if (user.getLocation() != null && user.getLocation().getCoordinates() != null) {
                             List<Double> coords = user.getLocation().getCoordinates();
                             if (coords.size() >= 2) {
                                 double lng = coords.get(0);
                                 double lat = coords.get(1);
-                                LatLng matchLatLng = new LatLng(lat, lng);
 
+                                float[] results = new float[1];
+                                Location.distanceBetween(currentLat, currentLng, lat, lng, results);
+                                float distanceInMeters = results[0];
+
+                                String distanceText = distanceInMeters < 1000
+                                        ? String.format("%dm", (int) distanceInMeters)
+                                        : String.format("%.1fkm", distanceInMeters / 1000f);
+
+                                user.setDistanceText(distanceText);
+
+                                LatLng matchLatLng = new LatLng(lat, lng);
                                 if (user.getAvatar() == null || user.getAvatar().isEmpty()) {
                                     Bitmap avatarBitmap = getCircularAvatarBitmapFromDrawable(R.drawable.boot);
                                     addMarkerWithAvatar(matchLatLng, user.getName(), avatarBitmap);
@@ -134,11 +156,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                                 }
 
                                                 @Override
-                                                public void onLoadCleared(@Nullable Drawable placeholder) { }
+                                                public void onLoadCleared(@Nullable Drawable placeholder) {
+                                                }
                                             });
                                 }
                             }
                         }
+
+                        MatchItem item = new MatchItem(user);
+                        matchList.add(item);
+                        matchAdapter.notifyItemInserted(matchList.size() - 1);
                     }
                 }
             }
@@ -150,13 +177,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
-
     private void addMarkerWithAvatar(LatLng position, String title, Bitmap avatar) {
         mMap.addMarker(new MarkerOptions()
                 .position(position)
                 .title(title != null ? title : "Người dùng")
                 .icon(BitmapDescriptorFactory.fromBitmap(avatar)));
     }
+
     private Bitmap getCircularAvatarBitmapFromDrawable(int drawableResId) {
         Drawable drawable = ContextCompat.getDrawable(this, drawableResId);
         int size = 120;
@@ -179,11 +206,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         return bitmap;
     }
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         checkLocationPermission();
-        loadMatches(); // Vẫn load danh sách match
     }
 
     private void checkLocationPermission() {
@@ -208,16 +235,40 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onLocationResult(LocationResult locationResult) {
                 if (locationResult == null) return;
                 Location location = locationResult.getLastLocation();
-                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-                if (userMarker == null) {
-                    userMarker = mMap.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .title("Bạn đang ở đây")
-                            .icon(BitmapDescriptorFactory.fromBitmap(avatarBitmap)));
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                } else {
-                    userMarker.setPosition(latLng);
+                if (location != null) {
+                    currentLat = location.getLatitude();
+                    currentLng = location.getLongitude();
+
+                    LatLng latLng = new LatLng(currentLat, currentLng);
+
+                    if (userMarker == null) {
+                        userMarker = mMap.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .title("Bạn đang ở đây")
+                                .icon(BitmapDescriptorFactory.fromBitmap(avatarBitmap)));
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                    } else {
+                        userMarker.setPosition(latLng);
+                    }
+
+                    // Nếu có chỉ đường
+                    if (isNavigateMode) {
+                        LatLng targetLatLng = new LatLng(targetLat, targetLng);
+                        mMap.addPolyline(new PolylineOptions()
+                                .add(latLng, targetLatLng)
+                                .width(10f)
+                                .color(Color.BLUE));
+
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(targetLatLng, 14));
+                        isNavigateMode = false;
+                        return;
+                    }
+
+                    if (!hasLoadedMatches) {
+                        hasLoadedMatches = true;
+                        loadMatches();
+                    }
                 }
             }
         };

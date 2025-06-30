@@ -1,13 +1,16 @@
 package com.example.prm392_group4_teamproject;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +27,10 @@ import com.google.android.gms.location.*;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,6 +45,7 @@ public class DetailFriendActivity extends AppCompatActivity implements OnMapRead
 
     private CircleImageView avatarImage;
     private TextView nameText, locationText, distanceText, updatedText;
+    private Button btnNavigate;
 
     private String userId, token;
 
@@ -51,12 +59,13 @@ public class DetailFriendActivity extends AppCompatActivity implements OnMapRead
         locationText = findViewById(R.id.locationtext);
         distanceText = findViewById(R.id.distancetext);
         updatedText = findViewById(R.id.tvUpdatedText);
+        btnNavigate = findViewById(R.id.btnNavigate);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         userApi = ApiClient.getClient().create(UserApi.class);
 
         userId = getIntent().getStringExtra("userId");
-        token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVjZTY5MDUyN2EzYjU0YzRiN2M4ZGEiLCJpYXQiOjE3NTEyMTI2NjIsImV4cCI6MTc1MTgxNzQ2Mn0.XJQ6iKbHf8tXudX6Fhr2ES-hPvEdbQQLyZGynMX8FDI";
+        token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVjZTY5MDUyN2EzYjU0YzRiN2M4ZGEiLCJpYXQiOjE3NTEzMDU4NDIsImV4cCI6MTc1MTkxMDY0Mn0.QYHb2gNk203sV-op-3PavCV742Esgm2-5iKoZmDWAHk";
 
         if (userId == null || token == null) {
             Toast.makeText(this, "Thiếu dữ liệu", Toast.LENGTH_SHORT).show();
@@ -108,6 +117,20 @@ public class DetailFriendActivity extends AppCompatActivity implements OnMapRead
 
     private void updateUI() {
         nameText.setText(user.getName());
+        btnNavigate.setText("Navigate to " + user.getName());
+
+        btnNavigate.setOnClickListener(v -> {
+            if (user.getLocation() != null) {
+                Intent intent = new Intent(this, MapsActivity.class);
+                intent.putExtra("targetLat", user.getLocation().getLatitude());
+                intent.putExtra("targetLng", user.getLocation().getLongitude());
+                intent.putExtra("targetName", user.getName());
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Người này chưa chia sẻ vị trí", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         if (user.getAvatar() == null || user.getAvatar().isEmpty()) {
             avatarImage.setImageResource(R.drawable.avataaaa);
         } else {
@@ -115,8 +138,11 @@ public class DetailFriendActivity extends AppCompatActivity implements OnMapRead
         }
 
         if (user.getLocation() != null) {
-            locationText.setText("📍 Lat: " + user.getLocation().getLatitude()
-                    + ", Lng: " + user.getLocation().getLongitude());
+            String address = getAddressFromLatLng(
+                    user.getLocation().getLatitude(),
+                    user.getLocation().getLongitude()
+            );
+            locationText.setText(address);
             updatedText.setText("Updated just now");
         } else {
             locationText.setText("Không rõ vị trí");
@@ -130,7 +156,6 @@ public class DetailFriendActivity extends AppCompatActivity implements OnMapRead
             mapFragment.getMapAsync(this);
         }
     }
-
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
@@ -138,7 +163,7 @@ public class DetailFriendActivity extends AppCompatActivity implements OnMapRead
         if (user == null || user.getLocation() == null) return;
         LatLng userLatLng = new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude());
 
-        // 🟣 Hiển thị avatar user
+        // Marker user khác
         if (user.getAvatar() == null || user.getAvatar().isEmpty()) {
             Bitmap avatar = getCircularAvatarBitmapFromDrawable(R.drawable.avataaaa);
             addMarkerWithAvatar(userLatLng, user.getName(), avatar);
@@ -154,11 +179,12 @@ public class DetailFriendActivity extends AppCompatActivity implements OnMapRead
                         }
 
                         @Override
-                        public void onLoadCleared(@Nullable Drawable placeholder) { }
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                        }
                     });
         }
 
-        // 🟢 Marker bản thân
+        // Marker bản thân
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
                 if (location != null) {
@@ -180,10 +206,12 @@ public class DetailFriendActivity extends AppCompatActivity implements OnMapRead
                                     }
 
                                     @Override
-                                    public void onLoadCleared(@Nullable Drawable placeholder) { }
+                                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                                    }
                                 });
                     }
 
+                    // Tính khoảng cách
                     float[] results = new float[1];
                     Location.distanceBetween(
                             location.getLatitude(), location.getLongitude(),
@@ -191,7 +219,7 @@ public class DetailFriendActivity extends AppCompatActivity implements OnMapRead
                             results
                     );
                     float distanceInKm = results[0] / 1000f;
-                    distanceText.setText(String.format("%.1f km away from you", distanceInKm));
+                    distanceText.setText(String.format(Locale.getDefault(), "%.1f km away from you", distanceInKm));
                 }
             });
         }
@@ -202,8 +230,9 @@ public class DetailFriendActivity extends AppCompatActivity implements OnMapRead
                 .position(position)
                 .title(title)
                 .icon(BitmapDescriptorFactory.fromBitmap(avatarBitmap)));
-        if ("Bạn".equals(title)) return;
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 15));
+        if (!"Bạn".equals(title)) {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 15));
+        }
     }
 
     private Bitmap getCircularAvatarBitmapFromDrawable(int drawableResId) {
@@ -236,5 +265,28 @@ public class DetailFriendActivity extends AppCompatActivity implements OnMapRead
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
         return bitmap;
+    }
+
+    private String getAddressFromLatLng(double latitude, double longitude) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                StringBuilder sb = new StringBuilder("\uD83D\uDCCD ");
+                if (address.getThoroughfare() != null)
+                    sb.append(address.getThoroughfare()).append(", ");
+                if (address.getSubLocality() != null)
+                    sb.append(address.getSubLocality()).append(", ");
+                if (address.getLocality() != null)
+                    sb.append(address.getLocality()).append(", ");
+                if (address.getCountryName() != null)
+                    sb.append(address.getCountryName());
+                return sb.toString().replaceAll(", $", "");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "Không rõ vị trí";
     }
 }

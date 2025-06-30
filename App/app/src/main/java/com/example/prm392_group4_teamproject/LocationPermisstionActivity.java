@@ -30,7 +30,7 @@ public class LocationPermisstionActivity extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationClient;
     private Button allowButton;
 
-    private String token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVjZTc4NjUyN2EzYjU0YzRiN2M4ZTAiLCJpYXQiOjE3NTEyMTA4MzIsImV4cCI6MTc1MTgxNTYzMn0.8QQAbuTNNdhBdQxQKGXy6w0JNbIZYSDhIMNqb-1_t8w"; // TODO: Thay bằng token thực tế (JWT hoặc từ SharedPreferences)
+    private String token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVjZTc4NjUyN2EzYjU0YzRiN2M4ZTAiLCJpYXQiOjE3NTEyMTA4MzIsImV4cCI6MTc1MTgxNTYzMn0.8QQAbuTNNdhBdQxQKGXy6w0JNbIZYSDhIMNqb-1_t8w";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +82,7 @@ public class LocationPermisstionActivity extends AppCompatActivity {
     private void sendLocationToServer(Location location) {
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
-        String address = ""; // Optional, bạn có thể dùng reverse geocoding nếu muốn
+        String address = "";
 
         LocationUpdate request = new LocationUpdate(latitude, longitude, address);
         UserApi userApi = ApiClient.getClient().create(UserApi.class);

@@ -11,8 +11,15 @@ public class User {
     private String avatar;
     private List<Photo> photos;
     private LocationData location;
+    private String distanceText;
+    public String getDistanceText() {
+        return distanceText;
+    }
+    public void setDistanceText(String distanceText) {
+        this.distanceText = distanceText;
+    }
 
-    // ✅ Constructor có đầy đủ tham số
+    // Constructor có đầy đủ tham số
     public User(String _id, String name, int age, String gender, String bio, String avatar, List<Photo> photos, LocationData location) {
         this._id = _id;
         this.name = name;
