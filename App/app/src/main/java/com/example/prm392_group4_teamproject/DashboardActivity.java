@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.prm392_group4_teamproject.fragments.FriendFragment;
 import com.example.prm392_group4_teamproject.fragments.HomeFragment;
 import com.example.prm392_group4_teamproject.fragments.NotificationsFragment;
 import com.example.prm392_group4_teamproject.fragments.ProfileFragment;
@@ -38,6 +39,8 @@ public class DashboardActivity extends AppCompatActivity {
                 selectedFragment = new NotificationsFragment();
             } else if (id == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
+            } else if (id == R.id.nav_friend) {
+                selectedFragment = new FriendFragment();
             }
 
             if (selectedFragment != null) {
