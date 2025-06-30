@@ -29,9 +29,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    dob: {
+      type: Date,
+      required: true,
+    },
     age: {
       type: Number,
-      required: true,
       min: 18,
       max: 100,
     },
@@ -117,7 +120,22 @@ userSchema.pre("save", async function (next) {
     next(error)
   }
 })
+// Tính age từ dob trước khi save
+userSchema.pre("save", function (next) {
+  if (this.dob) {
+    const today = new Date();
+    const birthDate = new Date(this.dob);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
 
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    this.age = age;
+  }
+  next();
+});
 // Compare password method
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password)
