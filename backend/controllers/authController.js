@@ -12,12 +12,12 @@ class AuthController {
         return res.status(400).json({ errors: errors.array() })
       }
 
-      const { name, email, password, age, gender, bio } = req.body
+      const { name, email, password, dob, gender, bio } = req.body
 
       // Check if user already exists
       const existingUser = await User.findOne({ email })
       if (existingUser) {
-        return res.status(400).json({ message: "User already exists" })
+        return res.status(409).json({ message: "User already exists" })
       }
 
       // Content moderation for name and bio
@@ -39,7 +39,7 @@ class AuthController {
         name,
         email,
         password,
-        age,
+        dob,
         gender,
         bio: bio || "",
       })
