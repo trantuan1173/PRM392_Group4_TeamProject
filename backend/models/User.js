@@ -108,18 +108,32 @@ const userSchema = new mongoose.Schema(
 // Index for geospatial queries
 userSchema.index({ location: "2dsphere" })
 
-// Hash password before saving
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next()
-
   try {
-    const salt = await bcrypt.genSalt(10)
-    this.password = await bcrypt.hash(this.password, salt)
-    next()
+    // Hash password nếu thay đổi
+    if (this.isModified("password")) {
+      const salt = await bcrypt.genSalt(10);
+      this.password = await bcrypt.hash(this.password, salt);
+    }
+
+    // Tính lại tuổi nếu có dob và không có age hoặc age cần cập nhật
+    if (this.dob) {
+      const today = new Date();
+      const birthDate = new Date(this.dob);
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+      this.age = age;
+    }
+
+    next();
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
 // Compare password method
 userSchema.methods.comparePassword = async function (candidatePassword) {
