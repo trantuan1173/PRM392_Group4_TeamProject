@@ -5,28 +5,45 @@ public class ProfileRequest {
     private int age;
     private String gender;
     private String bio;
+    private Location location;
+    private Preferences preferences;
 
-    public ProfileRequest(String name, int age, String gender, String bio) {
+    public ProfileRequest(String name, int age, String gender, String bio, Location location, Preferences preferences) {
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.bio = bio;
+        this.location = location;
+        this.preferences = preferences;
     }
 
-    // Nếu bạn cần sử dụng Gson cho getter/setter:
-    public String getName() {
-        return name;
+    public static class Location {
+        private String address;
+
+        public Location(String address) {
+            this.address = address;
+        }
     }
 
-    public int getAge() {
-        return age;
-    }
+    public static class Preferences {
+        private AgeRange ageRange;
+        private int maxDistance;
+        private String interestedIn;
 
-    public String getGender() {
-        return gender;
-    }
+        public Preferences(AgeRange ageRange, int maxDistance, String interestedIn) {
+            this.ageRange = ageRange;
+            this.maxDistance = maxDistance;
+            this.interestedIn = interestedIn;
+        }
 
-    public String getBio() {
-        return bio;
+        public static class AgeRange {
+            private int min;
+            private int max;
+
+            public AgeRange(int min, int max) {
+                this.min = min;
+                this.max = max;
+            }
+        }
     }
 }

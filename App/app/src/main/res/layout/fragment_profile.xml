@@ -1,40 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="16dp"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#FFFFFF">
 
-    <EditText
-        android:id="@+id/editName"
-        android:hint="Name"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp">
 
-    <EditText
-        android:id="@+id/editAge"
-        android:hint="Age"
-        android:inputType="number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <!-- Avatar -->
 
-    <EditText
-        android:id="@+id/editGender"
-        android:hint="Gender"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <!-- Name -->
+        <ImageView
+            android:id="@+id/avatarImageView"
+            android:layout_width="106dp"
+            android:layout_height="113dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
 
-    <EditText
-        android:id="@+id/editBio"
-        android:hint="Bio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            android:contentDescription="Avatar"
+            android:scaleType="centerCrop"
+            android:src="@drawable/user"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnUpdateProfile"
-        android:text="Update Profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="165dp"
+            android:layout_height="27dp"
+            android:text="Name"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/avatarImageView"
+            app:layout_constraintTop_toTopOf="@id/avatarImageView" />
 
-</LinearLayout>
+        <!-- Age -->
+        <TextView
+            android:id="@+id/tvAge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Age: 25"
+            app:layout_constraintEnd_toEndOf="@id/tvName"
+            app:layout_constraintStart_toStartOf="@id/tvName"
+            app:layout_constraintTop_toBottomOf="@id/tvName" />
+
+        <!-- Gender -->
+        <TextView
+            android:id="@+id/tvGender"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Gender: Male"
+            app:layout_constraintEnd_toEndOf="@id/tvName"
+            app:layout_constraintStart_toStartOf="@id/tvName"
+            app:layout_constraintTop_toBottomOf="@id/tvAge" />
+
+        <!-- Edit Button -->
+        <Button
+            android:id="@+id/btnEditProfile"
+            android:layout_width="107dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/gradient_button"
+            android:text="Edit Profile"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@null"
+            app:layout_constraintStart_toStartOf="@id/tvName"
+            app:layout_constraintTop_toBottomOf="@id/tvGender" />
+
+        <!-- EMAIL LABEL -->
+        <TextView
+            android:id="@+id/tvEmailLabel"
+            android:layout_width="320dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="24dp"
+            android:text="Email"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/avatarImageView" />
+
+        <!-- EMAIL VALUE -->
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="318dp"
+            android:layout_height="37dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/edittext_background"
+            android:padding="8dp"
+            android:text="example@email.com"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvEmailLabel" />
+
+        <!-- BIO LABEL -->
+        <TextView
+            android:id="@+id/tvBioLabel"
+            android:layout_width="320dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="16dp"
+            android:text="Bio"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvEmail" />
+
+        <!-- BIO VALUE -->
+        <TextView
+            android:id="@+id/tvBio"
+            android:layout_width="320dp"
+            android:layout_height="61dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/edittext_background"
+            android:padding="8dp"
+            android:text="Short description here..."
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvBioLabel" />
+
+        <!-- ADDRESS LABEL -->
+        <TextView
+            android:id="@+id/tvAddressLabel"
+            android:layout_width="320dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="16dp"
+            android:text="Location"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvBio" />
+
+        <!-- ADDRESS VALUE -->
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="321dp"
+            android:layout_height="37dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/edittext_background"
+            android:padding="8dp"
+            android:text="Hanoi, Vietnam"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAddressLabel" />
+
+        <!-- PREFERENCES LABEL -->
+        <TextView
+            android:id="@+id/tvPreferencesLabel"
+            android:layout_width="320dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="16dp"
+            android:text="Preferences"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAddress" />
+
+        <!-- PREFERENCES VALUE -->
+        <!-- PREFERENCES VALUE -->
+        <TextView
+            android:id="@+id/tvPreferences"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/rounded_background"
+            android:padding="8dp"
+            android:text="Reading, Music"
+            android:textColor="#C71585"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.108"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPreferencesLabel" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

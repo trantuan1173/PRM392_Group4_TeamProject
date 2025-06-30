@@ -16,18 +16,64 @@ public class ProfileResponse {
         private String gender;
         private String bio;
         private int age;
+        private String avatar;
+        private Location location;
+        private Preferences preferences;
 
-        public String getName() { return name; }
-        public String getEmail() { return email; }
-        public String getGender() { return gender; }
-        public String getBio() { return bio; }
-        public int getAge() { return age; }
-    }
+        public String getName() {
+            return name;
+        }
 
-    @Override
-    public String toString() {
-        return "ProfileResponse{" +
-                "user=" + user +
-                '}';
+        public String getEmail() {
+            return email;
+        }
+
+        public String getGender() {
+            return gender;
+        }
+
+        public String getBio() {
+            return bio;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public Location getLocation() {
+            return location;
+        }
+
+
+        public Preferences getPreferences() {
+            return preferences;
+        }
+
+        public static class Location {
+            private String address;
+
+            public String getAddress() {
+                return address;
+            }
+        }
+
+        public static class Preferences {
+            private int maxDistance;
+            private AgeRange ageRange;
+            private String interestedIn;
+
+            public String getInterestedIn() {
+                return interestedIn;
+            }
+
+            public static class AgeRange {
+                private int min;
+                private int max;
+            }
+        }
     }
 }

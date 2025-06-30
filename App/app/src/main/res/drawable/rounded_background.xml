@@ -1,0 +1,6 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- Màu nền bóng bóng hồng -->
+    <solid android:color="#FFF0F5" /> <!-- light pink, bạn có thể đổi thành #FFE4EC để sáng hơn -->
+    <corners android:radius="12dp" />
+</shape>
