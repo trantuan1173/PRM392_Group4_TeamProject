@@ -251,7 +251,7 @@ class UserController {
     try {
       const { userId } = req.params
 
-      const user = await User.findById(userId).select("name age gender bio avatar photos location createdAt")
+      const user = await User.findById(userId).select("name age gender bio avatar photos location isOnline createdAt")
 
       if (!user || user.isBanned) {
         return res.status(404).json({ message: "User not found" })
