@@ -12,6 +12,16 @@ public class User {
     private List<Photo> photos;
     private LocationData location;
     private String distanceText;
+    private boolean isOnline;
+
+    // Getter + Setter
+    public boolean isOnline() {
+        return isOnline;
+    }
+    public void setOnline(boolean online) {
+        isOnline = online;
+    }
+
     public String getDistanceText() {
         return distanceText;
     }

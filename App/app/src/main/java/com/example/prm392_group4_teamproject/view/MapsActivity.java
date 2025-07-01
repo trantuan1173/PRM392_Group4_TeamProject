@@ -139,7 +139,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     User user = response.body().getUser();
-                    if (user != null) {
+                    if (user != null && user.isOnline()) { // ✅ chỉ xử lý nếu đang online
                         if (user.getLocation() != null && user.getLocation().getCoordinates() != null) {
                             List<Double> coords = user.getLocation().getCoordinates();
                             if (coords.size() >= 2) {
@@ -183,6 +183,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         matchList.add(item);
                         matchAdapter.notifyItemInserted(matchList.size() - 1);
                     }
+
                 }
             }
 

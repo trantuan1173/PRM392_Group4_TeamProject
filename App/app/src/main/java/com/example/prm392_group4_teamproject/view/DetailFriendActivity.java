@@ -124,6 +124,16 @@ public class DetailFriendActivity extends AppCompatActivity implements OnMapRead
         nameText.setText(user.getName());
         btnNavigate.setText("Navigate to " + user.getName());
 
+        // ✅ Cập nhật trạng thái online/offline
+        TextView onlineStatus = findViewById(R.id.onlineStatus);
+        if (user.isOnline()) {
+            onlineStatus.setText("● Online now");
+            onlineStatus.setTextColor(Color.parseColor("#00C853")); // Màu xanh
+        } else {
+            onlineStatus.setText("● Offline");
+            onlineStatus.setTextColor(Color.GRAY);
+        }
+
         btnNavigate.setOnClickListener(v -> {
             if (user.getLocation() != null) {
                 Intent intent = new Intent(this, MapsActivity.class);
@@ -136,12 +146,14 @@ public class DetailFriendActivity extends AppCompatActivity implements OnMapRead
             }
         });
 
+        // Avatar
         if (user.getAvatar() == null || user.getAvatar().isEmpty()) {
             avatarImage.setImageResource(R.drawable.avataaaa);
         } else {
             Glide.with(this).load(user.getAvatar()).into(avatarImage);
         }
 
+        // Vị trí
         if (user.getLocation() != null) {
             String address = getAddressFromLatLng(
                     user.getLocation().getLatitude(),
@@ -153,6 +165,7 @@ public class DetailFriendActivity extends AppCompatActivity implements OnMapRead
             locationText.setText("Không rõ vị trí");
         }
     }
+
 
     private void loadMap() {
         SupportMapFragment mapFragment = (SupportMapFragment)
