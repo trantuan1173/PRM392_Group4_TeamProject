@@ -1,4 +1,4 @@
-package com.example.prm392_group4_teamproject;
+package com.example.prm392_group4_teamproject.view;
 
 import android.Manifest;
 import android.content.Intent;
@@ -23,6 +23,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.prm392_group4_teamproject.R;
+import com.example.prm392_group4_teamproject.api.ApiClient;
+import com.example.prm392_group4_teamproject.api.UserApi;
+import com.example.prm392_group4_teamproject.model.User;
+import com.example.prm392_group4_teamproject.model.UserResponse;
 import com.google.android.gms.location.*;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;

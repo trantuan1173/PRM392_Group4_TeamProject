@@ -1,4 +1,4 @@
-package com.example.prm392_group4_teamproject;
+package com.example.prm392_group4_teamproject.controller;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.prm392_group4_teamproject.view.DetailFriendActivity;
+import com.example.prm392_group4_teamproject.R;
+import com.example.prm392_group4_teamproject.model.MatchItem;
+import com.example.prm392_group4_teamproject.model.User;
 
 import java.util.List;
 

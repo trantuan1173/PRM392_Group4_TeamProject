@@ -1,12 +1,11 @@
-package com.example.prm392_group4_teamproject;
+package com.example.prm392_group4_teamproject.view;
 
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.example.prm392_group4_teamproject.R;
 
 public class MainActivity extends AppCompatActivity {
 

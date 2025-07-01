@@ -1,4 +1,6 @@
-package com.example.prm392_group4_teamproject;
+package com.example.prm392_group4_teamproject.api;
+
+import com.example.prm392_group4_teamproject.model.User;
 
 public class Message {
     public String _id;

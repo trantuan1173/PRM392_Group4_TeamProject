@@ -17,12 +17,12 @@
         android:theme="@style/Theme.PRM392_Group4_TeamProject"
         tools:targetApi="31">
         <activity
-            android:name=".MapsActivity"
+            android:name=".view.MapsActivity"
             android:exported="false">
 
         </activity>
 
-        <activity android:name=".LocationPermisstionActivity"
+        <activity android:name=".view.LocationPermisstionActivity"
             android:exported="true"
             >
             <intent-filter>
@@ -31,7 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DetailFriendActivity" android:exported="false">
+        <activity android:name=".view.DetailFriendActivity" android:exported="false">
 
         </activity>
         <meta-data android:name="com.google.android.geo.API_KEY"

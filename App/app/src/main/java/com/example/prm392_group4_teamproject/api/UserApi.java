@@ -1,10 +1,15 @@
-package com.example.prm392_group4_teamproject;
+package com.example.prm392_group4_teamproject.api;
+
+import com.example.prm392_group4_teamproject.model.LocationUpdate;
+import com.example.prm392_group4_teamproject.model.ApiResponse;
+import com.example.prm392_group4_teamproject.model.MatchResponse;
+import com.example.prm392_group4_teamproject.model.User;
+import com.example.prm392_group4_teamproject.model.UserResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;

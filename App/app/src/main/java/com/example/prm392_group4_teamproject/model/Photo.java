@@ -1,4 +1,4 @@
-package com.example.prm392_group4_teamproject;
+package com.example.prm392_group4_teamproject.model;
 
 public class Photo {
     private String url;

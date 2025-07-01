@@ -1,4 +1,4 @@
-package com.example.prm392_group4_teamproject;
+package com.example.prm392_group4_teamproject.view;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,10 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.prm392_group4_teamproject.ApiClient;
-import com.example.prm392_group4_teamproject.UserApi;
-import com.example.prm392_group4_teamproject.ApiResponse;
-import com.example.prm392_group4_teamproject.LocationUpdate;
+import com.example.prm392_group4_teamproject.R;
+import com.example.prm392_group4_teamproject.api.ApiClient;
+import com.example.prm392_group4_teamproject.api.UserApi;
+import com.example.prm392_group4_teamproject.model.LocationUpdate;
+import com.example.prm392_group4_teamproject.model.ApiResponse;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 

@@ -1,13 +1,15 @@
-package com.example.prm392_group4_teamproject;
+package com.example.prm392_group4_teamproject.controller;
 
 import android.Manifest;
 import android.content.Context;
-import android.location.Location;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresPermission;
 
+import com.example.prm392_group4_teamproject.api.ApiClient;
+import com.example.prm392_group4_teamproject.api.UserApi;
+import com.example.prm392_group4_teamproject.model.ApiResponse;
+import com.example.prm392_group4_teamproject.model.LocationUpdate;
 import com.google.android.gms.location.FusedLocationProviderClient;
 
 import retrofit2.Call;

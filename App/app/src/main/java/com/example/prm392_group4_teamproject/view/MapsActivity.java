@@ -1,4 +1,4 @@
-package com.example.prm392_group4_teamproject;
+package com.example.prm392_group4_teamproject.view;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -22,13 +22,30 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.prm392_group4_teamproject.R;
+import com.example.prm392_group4_teamproject.api.ApiClient;
+import com.example.prm392_group4_teamproject.api.UserApi;
+import com.example.prm392_group4_teamproject.controller.LocationHelper;
+import com.example.prm392_group4_teamproject.controller.MatchAdapter;
+import com.example.prm392_group4_teamproject.model.MatchItem;
+import com.example.prm392_group4_teamproject.model.MatchResponse;
+import com.example.prm392_group4_teamproject.model.OtherUserLite;
+import com.example.prm392_group4_teamproject.model.User;
+import com.example.prm392_group4_teamproject.model.UserResponse;
 import com.google.android.gms.location.*;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,11 +68,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private double currentLng = 0;
     private boolean hasLoadedMatches = false;
 
-    // Thêm biến điều hướng
     private double targetLat = 0;
     private double targetLng = 0;
     private String targetName = null;
     private boolean isNavigateMode = false;
+
 
     @SuppressLint("MissingPermission")
     @Override
@@ -72,7 +89,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         matchAdapter = new MatchAdapter(this, matchList);
         rvNearby.setAdapter(matchAdapter);
 
-        // Lấy dữ liệu điều hướng nếu có
         targetLat = getIntent().getDoubleExtra("targetLat", 0);
         targetLng = getIntent().getDoubleExtra("targetLng", 0);
         targetName = getIntent().getStringExtra("targetName");
@@ -224,6 +240,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+
     @SuppressLint("MissingPermission")
     private void startLocationUpdates() {
         locationRequest = LocationRequest.create();
@@ -252,14 +269,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         userMarker.setPosition(latLng);
                     }
 
-                    // Nếu có chỉ đường
                     if (isNavigateMode) {
                         LatLng targetLatLng = new LatLng(targetLat, targetLng);
-                        mMap.addPolyline(new PolylineOptions()
-                                .add(latLng, targetLatLng)
-                                .width(10f)
-                                .color(Color.BLUE));
-
+                        drawRouteUsingGoogleAPI(latLng, targetLatLng);
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(targetLatLng, 14));
                         isNavigateMode = false;
                         return;
@@ -275,6 +287,100 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
     }
+    private void drawRouteUsingGoogleAPI(LatLng origin, LatLng destination) {
+        String apiKey = "AIzaSyCsSPp2vj3uEo4wgp2wwkj051CLr04NeFE";
+        String url = String.format(
+                "https://maps.googleapis.com/maps/api/directions/json?origin=%f,%f&destination=%f,%f&key=%s",
+                origin.latitude, origin.longitude, destination.latitude, destination.longitude, apiKey);
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(url).build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(@NonNull okhttp3.Call call, @NonNull IOException e) {
+                Log.e("RouteAPI", "Route fetch failed: " + e.getMessage());
+                runOnUiThread(() -> {
+                    Toast.makeText(MapsActivity.this, "Route fetch failed - vẽ đường thẳng", Toast.LENGTH_SHORT).show();
+                    drawStraightLine(origin, destination);  // fallback
+                });
+            }
+
+            @Override
+            public void onResponse(@NonNull okhttp3.Call call, @NonNull okhttp3.Response response) throws IOException {
+                if (response.isSuccessful() && response.body() != null) {
+                    String responseData = response.body().string();
+                    try {
+                        JSONObject json = new JSONObject(responseData);
+                        JSONArray routes = json.getJSONArray("routes");
+                        if (routes.length() > 0) {
+                            JSONObject route = routes.getJSONObject(0);
+                            JSONObject overviewPolyline = route.getJSONObject("overview_polyline");
+                            String encodedPoints = overviewPolyline.getString("points");
+
+                            List<LatLng> points = decodePolyline(encodedPoints);
+                            runOnUiThread(() -> mMap.addPolyline(new PolylineOptions()
+                                    .addAll(points)
+                                    .width(10f)
+                                    .color(Color.BLUE)));
+                        } else {
+                            // Không có route → fallback
+                            runOnUiThread(() -> {
+                                Toast.makeText(MapsActivity.this, "Không tìm thấy tuyến đường - vẽ đường thẳng", Toast.LENGTH_SHORT).show();
+                                drawStraightLine(origin, destination);
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        runOnUiThread(() -> {
+                            Toast.makeText(MapsActivity.this, "Phân tích tuyến đường lỗi - vẽ đường thẳng", Toast.LENGTH_SHORT).show();
+                            drawStraightLine(origin, destination);
+                        });
+                    }
+                } else {
+                    runOnUiThread(() -> {
+                        Toast.makeText(MapsActivity.this, "Phản hồi lỗi - vẽ đường thẳng", Toast.LENGTH_SHORT).show();
+                        drawStraightLine(origin, destination);
+                    });
+                }
+            }
+        });
+    }
+    private List<LatLng> decodePolyline(String encoded) {
+        List<LatLng> poly = new ArrayList<>();
+        int index = 0, len = encoded.length();
+        int lat = 0, lng = 0;
+
+        while (index < len) {
+            int b, shift = 0, result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lat += dlat;
+
+            shift = 0;
+            result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lng += dlng;
+
+            LatLng p = new LatLng(lat / 1E5, lng / 1E5);
+            poly.add(p);
+        }
+
+        return poly;
+    }
+
+
+
+
 
     private Bitmap getCircularAvatarBitmap() {
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.avataaaa);
@@ -319,7 +425,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             startLocationUpdates();
         }
     }
-
+    private void drawStraightLine(LatLng origin, LatLng destination) {
+        mMap.addPolyline(new PolylineOptions()
+                .add(origin, destination)
+                .width(10f)
+                .color(Color.BLUE));
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
