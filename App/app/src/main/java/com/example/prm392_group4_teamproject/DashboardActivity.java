@@ -1,6 +1,7 @@
 package com.example.prm392_group4_teamproject;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,12 +24,10 @@ public class DashboardActivity extends AppCompatActivity {
 
         bottomNav = findViewById(R.id.bottom_nav);
 
-        // Load default fragment (Home)
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
         }
 
-        // Bottom navigation item selected listener
         bottomNav.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
 
@@ -40,6 +39,7 @@ public class DashboardActivity extends AppCompatActivity {
             } else if (id == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
             } else if (id == R.id.nav_friend) {
+                Log.d("DashboardActivity", "Switching to FriendFragment");
                 selectedFragment = new FriendFragment();
             }
 
@@ -52,9 +52,6 @@ public class DashboardActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Helper method to load the selected fragment into the container.
-     */
     private void loadFragment(@NonNull Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
