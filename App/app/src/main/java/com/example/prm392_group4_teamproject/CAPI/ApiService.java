@@ -17,6 +17,8 @@ public interface ApiService {
     @PUT("/api/users/profile")
     Call<Void> updateProfile(@Body ProfileRequest request);
 
+    @GET("/api/matches")
+    Call<MatchResponse> getMatches();
 
 }
 

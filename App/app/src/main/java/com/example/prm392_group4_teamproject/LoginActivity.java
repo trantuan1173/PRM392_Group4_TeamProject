@@ -1,5 +1,4 @@
 package com.example.prm392_group4_teamproject;
-import com.example.prm392_group4_teamproject.CAPI.ApiClient;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LOGIN_ACTIVITY";
     private static final String PREFS_NAME = "MyPrefs";
     private static final String TOKEN_KEY = "auth_token";
+    private static final String USER_ID_KEY = "user_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,34 +41,41 @@ public class LoginActivity extends AppCompatActivity {
             String email = emailInput.getText().toString().trim();
             String password = passwordInput.getText().toString().trim();
 
-            LoginRequest request = new LoginRequest(email, password);
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(LoginActivity.this, "Please enter email and password", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
+            LoginRequest request = new LoginRequest(email, password);
             Retrofit retrofit = ApiClient.getClient();
             ApiService apiService = retrofit.create(ApiService.class);
-            Call<LoginResponse> call = apiService.loginUser(request);
 
+            Call<LoginResponse> call = apiService.loginUser(request);
             call.enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         String token = response.body().getToken();
-                        Log.d(TAG, "Received token: " + token);
+                        String userId = response.body().getUser().getId();
 
-                        // Lưu token vào SharedPreferences
+                        Log.d(TAG, "Login successful. Token: " + token);
+
+                        // Save token and userId to SharedPreferences
                         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putString(TOKEN_KEY, token);
+                        editor.putString(USER_ID_KEY, userId);
                         editor.apply();
 
                         Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
 
-                        // Chuyển sang màn Dashboard
+                        // Navigate to Dashboard
                         Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                         startActivity(intent);
-                        finish(); // Đóng LoginActivity
+                        finish();
                     } else {
-                        Toast.makeText(LoginActivity.this, "Login failed!", Toast.LENGTH_SHORT).show();
-                        Log.e(TAG, "Response error: " + response.code());
+                        Toast.makeText(LoginActivity.this, "Login failed! Check credentials.", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Login response failed: " + response.code());
                     }
                 }
 

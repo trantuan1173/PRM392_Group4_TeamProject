@@ -16,6 +16,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".DashboardActivity" />
         <activity android:name=".EditProfileActivity" />
+        <activity android:name=".FriendDetailActivity" />
 
         <activity
             android:name=".MainActivity"

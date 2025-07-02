@@ -1,9 +1,11 @@
 package com.example.prm392_group4_teamproject.CAPI;
 
+import com.google.gson.annotations.SerializedName;
+
 public class LoginResponse {
     private String message;
     private String token;
-    private ProfileResponse.User user;
+    private User user;
 
     public String getMessage() {
         return message;
@@ -13,7 +15,27 @@ public class LoginResponse {
         return token;
     }
 
-    public ProfileResponse.User getUser() {
+    public User getUser() {
         return user;
+    }
+
+    public static class User {
+        @SerializedName("_id")
+        private String id;
+
+        private String name;
+        private String email;
+
+        public String getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getEmail() {
+            return email;
+        }
     }
 }

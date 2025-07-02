@@ -11,6 +11,9 @@ public class ProfileResponse {
     }
 
     public static class User {
+        @SerializedName("_id")
+        private String id;
+
         private String name;
         private String email;
         private String gender;
@@ -19,6 +22,10 @@ public class ProfileResponse {
         private String avatar;
         private Location location;
         private Preferences preferences;
+
+        public String getId() {
+            return id;
+        }
 
         public String getName() {
             return name;
@@ -47,7 +54,6 @@ public class ProfileResponse {
         public Location getLocation() {
             return location;
         }
-
 
         public Preferences getPreferences() {
             return preferences;

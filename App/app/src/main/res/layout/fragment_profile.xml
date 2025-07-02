@@ -18,8 +18,8 @@
         <!-- Name -->
         <ImageView
             android:id="@+id/avatarImageView"
-            android:layout_width="106dp"
-            android:layout_height="113dp"
+            android:layout_width="123dp"
+            android:layout_height="124dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
 
@@ -65,8 +65,8 @@
         <!-- Edit Button -->
         <Button
             android:id="@+id/btnEditProfile"
-            android:layout_width="107dp"
-            android:layout_height="35dp"
+            android:layout_width="121dp"
+            android:layout_height="42dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/gradient_button"
             android:text="Edit Profile"
