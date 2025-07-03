@@ -19,6 +19,8 @@ public interface ApiService {
 
     @GET("/api/matches")
     Call<MatchResponse> getMatches();
+    @GET("/api/notifications")
+    Call<NotificationResponse> getNotifications();
 
 }
 

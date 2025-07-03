@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.prm392_group4_teamproject.fragments.FriendFragment;
 import com.example.prm392_group4_teamproject.fragments.HomeFragment;
-import com.example.prm392_group4_teamproject.fragments.NotificationsFragment;
+import com.example.prm392_group4_teamproject.fragments.NotificationFragment;
 import com.example.prm392_group4_teamproject.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -24,6 +24,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         bottomNav = findViewById(R.id.bottom_nav);
 
+        // Load HomeFragment by default
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
         }
@@ -35,7 +36,7 @@ public class DashboardActivity extends AppCompatActivity {
             if (id == R.id.nav_home) {
                 selectedFragment = new HomeFragment();
             } else if (id == R.id.nav_notifications) {
-                selectedFragment = new NotificationsFragment();
+                selectedFragment = new NotificationFragment();
             } else if (id == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
             } else if (id == R.id.nav_friend) {
