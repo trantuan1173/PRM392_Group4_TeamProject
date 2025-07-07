@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -19,13 +23,24 @@
         <activity android:name=".FriendDetailActivity" />
 
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".view.MapsActivity"
+            android:exported="false">
+
+        </activity>
+
+        <activity android:name=".view.LocationPermisstionActivity"
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.DetailFriendActivity" android:exported="false">
+
+        </activity>
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCsSPp2vj3uEo4wgp2wwkj051CLr04NeFE"/>
     </application>
 
 </manifest>
