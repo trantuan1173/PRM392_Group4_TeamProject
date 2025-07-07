@@ -1,77 +1,61 @@
-// LoginActivity.java
 package com.example.prm392_group4_teamproject;
+import com.example.prm392_group4_teamproject.CAPI.ApiClient;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.prm392_group4_teamproject.CAPI.*;
+import com.example.prm392_group4_teamproject.CAPI.ApiService;
+import com.example.prm392_group4_teamproject.CAPI.LoginRequest;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText emailInput;
-    private EditText passwordInput;
-    private Button signInButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        emailInput = findViewById(R.id.emailInput);
-        passwordInput = findViewById(R.id.passwordInput);
-        signInButton = findViewById(R.id.signInButton);
+        // Initialize login form views
+        EditText emailInput = findViewById(R.id.emailInput);
+        EditText passwordInput = findViewById(R.id.passwordInput);
+        Button loginButton = findViewById(R.id.signInButton);
 
-        signInButton.setOnClickListener(v -> loginUser());
-    }
+        loginButton.setOnClickListener(v -> {
+            String email = emailInput.getText().toString();
+            String password = passwordInput.getText().toString();
 
-    private void loginUser() {
-        String email = emailInput.getText().toString().trim();
-        String password = passwordInput.getText().toString().trim();
+            LoginRequest request = new LoginRequest(email, password);
 
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show();
-            return;
-        }
+            Retrofit retrofit = ApiClient.getClient();
 
-        LoginRequest request = new LoginRequest(email, password);
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+            ApiService apiService = retrofit.create(ApiService.class);
+            Call<Void> call = apiService.loginUser(request);
 
-        apiService.loginUser(request).enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    String token = response.body().getToken();
-                    String userId = response.body().getUser().getId();
-
-                    SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-                    prefs.edit()
-                            .putString("auth_token", token)
-                            .putString("user_id", userId)
-                            .apply();
-
-                    Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                        // TODO: Navigate to main screen or save token if needed
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Login failed!", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("LoginActivity", "Login failed", t);
-            }
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
         });
     }
 }

@@ -44,10 +44,23 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation ("com.github.yuyakaido:CardStackView:v2.3.4")
-    implementation ("com.github.bumptech.glide:glide:4.13.2")
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.github.yuyakaido:CardStackView:v2.3.4")
+    implementation("com.github.bumptech.glide:glide:4.13.2")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    implementation("io.socket:socket.io-client:2.0.1") {
+        exclude(group = "org.json", module = "json")
+    }
+    configurations.all {
+        resolutionStrategy {
+            force("com.squareup.okhttp3:okhttp:3.12.1")
+        }
+    }
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+    implementation("de.hdodenhof:circleimageview:3.1.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

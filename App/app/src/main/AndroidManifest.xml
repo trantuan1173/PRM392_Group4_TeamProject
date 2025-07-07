@@ -31,6 +31,9 @@
         <activity android:name=".view.LocationPermisstionActivity"
             android:exported="true"
             >
+        <activity
+            android:name=".MessageActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -41,6 +44,11 @@
         </activity>
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCsSPp2vj3uEo4wgp2wwkj051CLr04NeFE"/>
+        <activity
+            android:name=".MessageChart"
+            android:exported="false">
+
+        </activity>
     </application>
 
 </manifest>
