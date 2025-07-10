@@ -46,6 +46,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"
+        android:layout_marginBottom="96dp"
         app:layout_constraintBottom_toTopOf="@id/bottomActions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -97,21 +98,6 @@
             android:src="@drawable/boot"
             android:contentDescription="@string/boost_button_desc" />
     </LinearLayout>
-    <Button
-        android:id="@+id/goToProfileButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go to Profile"
-        tools:ignore="MissingConstraints" />
-    <Button
-        android:id="@+id/goToRegisterButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Đăng ký"
-        android:layout_margin="16dp"
-        android:backgroundTint="#6200EE"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
