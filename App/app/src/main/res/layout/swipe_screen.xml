@@ -98,6 +98,12 @@
             android:contentDescription="@string/boost_button_desc" />
     </LinearLayout>
     <Button
+        android:id="@+id/goToProfileButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to Profile"
+        tools:ignore="MissingConstraints" />
+    <Button
         android:id="@+id/goToRegisterButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

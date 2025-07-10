@@ -22,8 +22,6 @@ public interface ApiService {
     @GET("/api/notifications")
     Call<NotificationResponse> getNotifications();
 
-    @POST("/api/auth/login")
-    Call<Void> loginUser(@Body LoginRequest request);
 }
 
 
