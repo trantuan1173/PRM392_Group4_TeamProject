@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.prm392_group4_teamproject.Cards.arrayAdapter;
 import com.example.prm392_group4_teamproject.Cards.cards;
+import com.example.prm392_group4_teamproject.MessageActivity;
 import com.example.prm392_group4_teamproject.R;
 import com.yuyakaido.android.cardstackview.*;
 
@@ -32,6 +34,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.swipe_screen, container, false);
     }
 
@@ -71,6 +74,12 @@ public class HomeFragment extends Fragment {
 
         adapter = new arrayAdapter(userList, getContext());
         cardStackView.setAdapter(adapter);
+        ImageView ivChat = view.findViewById(R.id.ivChat);
+        ivChat.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), MessageActivity.class);
+            startActivity(intent);
+        });
+
 
     }
 }

@@ -1,11 +1,12 @@
 package com.example.prm392_group4_teamproject;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prm392_group4_teamproject.CAPI.*;
+import com.example.prm392_group4_teamproject.model.ProfileRequest;
+import com.example.prm392_group4_teamproject.model.ProfileResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;

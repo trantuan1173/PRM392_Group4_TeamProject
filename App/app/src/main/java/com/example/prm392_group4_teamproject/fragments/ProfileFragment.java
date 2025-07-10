@@ -13,8 +13,7 @@ import com.bumptech.glide.Glide;
 
 import com.example.prm392_group4_teamproject.CAPI.ApiClient;
 import com.example.prm392_group4_teamproject.CAPI.ApiService;
-import com.example.prm392_group4_teamproject.CAPI.ProfileRequest;
-import com.example.prm392_group4_teamproject.CAPI.ProfileResponse;
+import com.example.prm392_group4_teamproject.model.ProfileResponse;
 import com.example.prm392_group4_teamproject.EditProfileActivity;
 import com.example.prm392_group4_teamproject.R;
 

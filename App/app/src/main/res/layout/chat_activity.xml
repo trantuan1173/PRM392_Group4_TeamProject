@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 💬 Header -->
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:paddingTop="24dp"
+        android:padding="12dp"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageAvatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/girrl"
+            android:scaleType="centerCrop"
+            android:background="@drawable/circle_bg" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textName"
+                android:text="Emma Watson"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/textStatus"
+                android:text="Online now"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- 🗨️ Message List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerMessages"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:overScrollMode="never"
+        android:scrollbars="none"/>
+
+    <!-- ✏️ Message Input -->
+    <LinearLayout
+        android:id="@+id/inputLayout"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="#f5f5f5"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/editMessage"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_input"
+            android:hint="Type a message"
+            android:padding="10dp"
+            android:maxLines="4"/>
+
+        <ImageView
+            android:id="@+id/btnSend"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_sent"
+            android:src="@drawable/send"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+</LinearLayout>

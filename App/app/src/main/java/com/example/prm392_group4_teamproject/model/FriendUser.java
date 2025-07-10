@@ -1,4 +1,4 @@
-package com.example.prm392_group4_teamproject.CAPI;
+package com.example.prm392_group4_teamproject.model;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -12,6 +12,7 @@ public class FriendUser {
     private int age;
     private String avatar;
     private Location location;
+
 
     public String getId() { return id; }
     public String getName() { return name; }

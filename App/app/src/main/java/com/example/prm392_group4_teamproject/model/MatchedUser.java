@@ -1,4 +1,4 @@
-package com.example.prm392_group4_teamproject.CAPI;
+package com.example.prm392_group4_teamproject.model;
 
 public class MatchedUser {
     private String _id;

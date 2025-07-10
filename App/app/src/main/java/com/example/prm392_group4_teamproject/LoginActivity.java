@@ -10,6 +10,8 @@ import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prm392_group4_teamproject.CAPI.*;
+import com.example.prm392_group4_teamproject.model.LoginRequest;
+import com.example.prm392_group4_teamproject.model.LoginResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,8 +31,17 @@ public class LoginActivity extends AppCompatActivity {
         passwordInput = findViewById(R.id.passwordInput);
         signInButton = findViewById(R.id.signInButton);
 
+        // Xử lý đăng nhập
         signInButton.setOnClickListener(v -> loginUser());
+
+        // 👉 Xử lý nhấn "Sign Up"
+        TextView signUpLink = findViewById(R.id.signUpLink);
+        signUpLink.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+            startActivity(intent);
+        });
     }
+
 
     private void loginUser() {
         String email = emailInput.getText().toString().trim();

@@ -9,20 +9,18 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.prm392_group4_teamproject.CAPI.ApiClient;
 import com.example.prm392_group4_teamproject.CAPI.ApiService;
-import com.example.prm392_group4_teamproject.CAPI.RegisterRequest;
+import com.example.prm392_group4_teamproject.model.RegisterRequest;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegistrationActivity extends AppCompatActivity {
 

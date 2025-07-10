@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.*;
 import com.example.prm392_group4_teamproject.*;
 import com.example.prm392_group4_teamproject.CAPI.*;
 import com.example.prm392_group4_teamproject.adapters.FriendAdapter;
+import com.example.prm392_group4_teamproject.model.FriendUser;
+import com.example.prm392_group4_teamproject.model.MatchResponse;
 import com.google.gson.Gson;
 
 import java.util.*;
@@ -41,12 +43,11 @@ public class FriendFragment extends Fragment {
         recyclerView = view.findViewById(R.id.friendRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new FriendAdapter(friendList, friend -> {
-            Intent intent = new Intent(getContext(), FriendDetailActivity.class);
-            intent.putExtra("friend", new Gson().toJson(friend));
+        adapter = new FriendAdapter(requireContext(), friendList, friend -> {
+            Intent intent = new Intent(requireContext(), DetailFriendActivity.class);
+            intent.putExtra("userId", friend.getId());
             startActivity(intent);
         });
-
         recyclerView.setAdapter(adapter);
         fetchMatches();
         return view;

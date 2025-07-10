@@ -1,5 +1,12 @@
 package com.example.prm392_group4_teamproject.CAPI;
 
+import com.example.prm392_group4_teamproject.model.LoginRequest;
+import com.example.prm392_group4_teamproject.model.LoginResponse;
+import com.example.prm392_group4_teamproject.model.MatchResponse;
+import com.example.prm392_group4_teamproject.model.ProfileRequest;
+import com.example.prm392_group4_teamproject.model.ProfileResponse;
+import com.example.prm392_group4_teamproject.model.RegisterRequest;
+
 import retrofit2.Call;
 import retrofit2.http.*;
 

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.prm392_group4_teamproject.fragments.FriendFragment;
 import com.example.prm392_group4_teamproject.fragments.HomeFragment;
+import com.example.prm392_group4_teamproject.fragments.MapsFragment;
 import com.example.prm392_group4_teamproject.fragments.NotificationFragment;
 import com.example.prm392_group4_teamproject.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -41,7 +42,7 @@ public class DashboardActivity extends AppCompatActivity {
                 selectedFragment = new ProfileFragment();
             } else if (id == R.id.nav_friend) {
                 Log.d("DashboardActivity", "Switching to FriendFragment");
-                selectedFragment = new FriendFragment();
+                selectedFragment = new MapsFragment();
             }
 
             if (selectedFragment != null) {
