@@ -1,4 +1,4 @@
-package com.example.prm392_group4_teamproject.view;
+package com.example.prm392_group4_teamproject;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,8 +20,6 @@ import com.yuyakaido.android.cardstackview.Direction;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.prm392_group4_teamproject.R;
 
 public class MainActivity extends AppCompatActivity {
 
