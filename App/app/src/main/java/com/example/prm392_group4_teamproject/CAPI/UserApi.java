@@ -18,20 +18,20 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface UserApi {
-    @GET("users/profile")
+    @GET("/api/users/profile")
     Call<UserResponse> getProfile(@Header("Authorization") String token);
-    @GET("users/profile")
+    @GET("/api/users/profile")
     Call<User> getProfile2(@Header("Authorization") String token);
 
-    @PUT("users/location")
+    @PUT("/api/users/location")
     Call<ApiResponse> updateLocation(@Header("Authorization") String token, @Body LocationUpdate location);
-    @GET("matches")
+    @GET("/api/matches")
     Call<MatchMapsResponse> getMatches(@Header("Authorization") String token, @Query("page") int page, @Query("limit") int limit);
-    @GET("matches")
+    @GET("/api/matches")
     Call<MatchResponse2> getMatches2(@Header("Authorization") String token, @Query("page") int page, @Query("limit") int limit);
-    @GET("users/{userId}")
+    @GET("/api/users/{userId}")
     Call<UserResponse> getUserById(@Header("Authorization") String token, @Path("userId") String userId);
 
-    @GET("matches/{matchId}")
+    @GET("/api/matches/{matchId}")
     Call<MatchDetailResponse> getMatchById(@Header("Authorization") String token, @Path("matchId") String matchId);
 }

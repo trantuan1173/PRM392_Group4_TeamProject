@@ -23,7 +23,7 @@ import retrofit2.http.*;
 
     public interface MessageApi {
 
-        @GET("messages/{matchId}")
+        @GET("/api/messages/{matchId}")
         Call<MessageListResponse> getMessages(
                 @Header("Authorization") String token,
                 @Path("matchId") String matchId,
@@ -32,7 +32,7 @@ import retrofit2.http.*;
         );
 
         // Gửi tin nhắn (text, image, gif)
-        @POST("messages/{matchId}")
+        @POST("/api/messages/{matchId}")
         Call<SendMessageResponse> sendMessage(
                 @Header("Authorization") String token,
                 @Path("matchId") String matchId,
@@ -40,14 +40,14 @@ import retrofit2.http.*;
         );
 
         // Đánh dấu tin nhắn đã đọc
-        @PUT("messages/{matchId}/read")
+        @PUT("/api/messages/{matchId}/read")
         Call<ApiResponse> markMessagesAsRead(
                 @Header("Authorization") String token,
                 @Path("matchId") String matchId
         );
 
         // Xoá tin nhắn (soft delete)
-        @PUT("messages/delete/{messageId}")
+        @PUT("/api/messages/delete/{messageId}")
         Call<ApiResponse> deleteMessage(
                 @Header("Authorization") String token,
                 @Path("messageId") String messageId
