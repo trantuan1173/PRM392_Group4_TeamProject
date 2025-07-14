@@ -12,9 +12,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/logotin"
+        android:icon="@mipmap/img"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/logotin"
+        android:roundIcon="@mipmap/img"
         android:supportsRtl="true"
         android:theme="@style/Theme.PRM392_Group4_TeamProject"
         tools:targetApi="31">
