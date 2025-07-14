@@ -159,15 +159,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/feature3" />
 
-    <TextView
-        android:id="@+id/notNowText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Not Now"
-        android:textColor="#999999"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/allowButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

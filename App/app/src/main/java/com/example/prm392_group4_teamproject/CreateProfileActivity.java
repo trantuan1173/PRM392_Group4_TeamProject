@@ -153,7 +153,9 @@ public class CreateProfileActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(CreateProfileActivity.this, "Profile created", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(CreateProfileActivity.this, DashboardActivity.class));
+                    Intent intent = new Intent(CreateProfileActivity.this, LocationPermisstionActivity.class);
+                    intent.putExtra("from", "CreateProfileActivity"); // gửi thêm nếu cần phân biệt
+                    startActivity(intent);
                     finish();
                 } else {
                     Toast.makeText(CreateProfileActivity.this, "Failed to create profile", Toast.LENGTH_SHORT).show();

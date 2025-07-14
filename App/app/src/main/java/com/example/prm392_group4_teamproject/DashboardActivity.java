@@ -41,7 +41,7 @@ public class DashboardActivity extends AppCompatActivity {
             } else if (id == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
             } else if (id == R.id.nav_friend) {
-                Log.d("DashboardActivity", "Switching to FriendFragment");
+                Log.d("DashboardActivity", "Switching to MapsFragment");
                 selectedFragment = new MapsFragment();
             }
 

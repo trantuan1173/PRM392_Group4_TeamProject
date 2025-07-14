@@ -63,11 +63,13 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
         holder.btnCall.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailFriendActivity.class);
             intent.putExtra("userId", user.getId()); // hoặc putExtra các dữ liệu khác cần thiết
+            intent.putExtra("matchId",match.get_id());
             Log.e("Id",user.getId());
             context.startActivity(intent);
         });
         holder.btnMatch.setOnClickListener(v -> {
             Intent intent = new Intent(context, MessageChartActivity.class);
+            Log.e("Location",match.toString());
             intent.putExtra("matchId", match.get_id()); // matchId cần thiết để gọi API, socket
             context.startActivity(intent);
         });

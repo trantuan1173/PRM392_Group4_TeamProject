@@ -1,7 +1,10 @@
 package com.example.prm392_group4_teamproject.model;
 
 
+import com.google.gson.annotations.SerializedName;
+
 public class MatchItem {
+    @SerializedName("_id")
     private String _id;
     private OtherUserLite otherUser;
     private User fullOtherUser;

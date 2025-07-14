@@ -78,7 +78,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             startActivity(intent);
         });
     }
-
     @RequiresPermission(allOf = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     @Nullable
     @Override
@@ -87,8 +86,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.friend_map_screen, container, false);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
-        fetchMyProfileAvatar();
-        mapFragment.getMapAsync(this);
 
         SharedPreferences prefs = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         token = "Bearer " + prefs.getString("auth_token", "");
@@ -98,20 +95,27 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         matchAdapter = new MatchAdapter(requireContext(), matchList);
         rvNearby.setAdapter(matchAdapter);
 
-        // Thêm map fragment thủ công vào FrameLayout
+        // ✅ Khởi tạo và thay thế map fragment
         mapFragment = SupportMapFragment.newInstance();
         getChildFragmentManager()
                 .beginTransaction()
                 .replace(R.id.mapContainer, mapFragment)
                 .commit();
 
-        mapFragment.getMapAsync(this);
+        // ✅ CHỜ fragment gắn xong rồi mới gọi getMapAsync
+        getChildFragmentManager().executePendingTransactions();  // bắt buộc
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        } else {
+            Log.e("MapsFragment", "mapFragment is still null!");
+        }
 
-
+        fetchMyProfileAvatar();
         LocationHelper.updateLocationToServer(requireContext(), fusedLocationClient, token);
 
         return view;
     }
+
 
     private void fetchMyProfileAvatar() {
         UserApi userApi = ApiClient.getClient().create(UserApi.class);
@@ -243,7 +247,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     matchList.clear();
                     for (MatchItem item : response.body().getMatches()) {
                         if (item.getOtherUser() != null) {
-                            loadUserDetailsAndAddToList(item.getOtherUser().get_id());
+                            String userId = item.getOtherUser().get_id();
+                            String matchId = item.get_id();
+                            loadUserDetailsAndAddToList(userId,matchId);
                         }
                     }
                 }
@@ -381,7 +387,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 .icon(BitmapDescriptorFactory.fromBitmap(avatar)));
     }
 
-    private void loadUserDetailsAndAddToList(String userId) {
+    private void loadUserDetailsAndAddToList(String userId,String matchId) {
         UserApi userApi = ApiClient.getClient().create(UserApi.class);
         Call<UserResponse> call = userApi.getUserById(token, userId);
 
@@ -431,6 +437,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                         }
 
                         MatchItem item = new MatchItem(user);
+                        item.set_id(matchId);
                         matchList.add(item);
                         Collections.sort(matchList, new NearbyUserDistanceComparator());
                         if (matchList.size() > 3) {

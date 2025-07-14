@@ -52,6 +52,7 @@ public class DetailFriendActivity extends AppCompatActivity implements OnMapRead
     private CircleImageView avatarImage;
     private TextView nameText, locationText, distanceText, updatedText;
     private Button btnNavigate;
+    private Button btnMessage;
 
     private String userId, token;
 
@@ -59,16 +60,24 @@ public class DetailFriendActivity extends AppCompatActivity implements OnMapRead
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_friend_screen);
-
+        String matchId = getIntent().getStringExtra("matchId");
         avatarImage = findViewById(R.id.avatarImage);
         nameText = findViewById(R.id.nameText);
         locationText = findViewById(R.id.locationtext);
         distanceText = findViewById(R.id.distancetext);
         updatedText = findViewById(R.id.tvUpdatedText);
         btnNavigate = findViewById(R.id.btnNavigate);
-
+        btnMessage = findViewById(R.id.btnMessage);
+        btnMessage.setOnClickListener(v -> {
+            if (userId != null && !userId.isEmpty()) {
+                openMessageChartByUserId(matchId);
+            } else {
+                Toast.makeText(this, "Không thể mở chat", Toast.LENGTH_SHORT).show();
+            }
+        });
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         userApi = ApiClient.getClient().create(UserApi.class);
+
 
         userId = getIntent().getStringExtra("userId");
         SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
@@ -81,6 +90,11 @@ public class DetailFriendActivity extends AppCompatActivity implements OnMapRead
         }
 
         fetchUserById(userId, token);
+    }
+    private void openMessageChartByUserId(String matchId) {
+        Intent intent = new Intent(this, MessageChartActivity.class);
+        intent.putExtra("matchId", matchId); // ✔️ truyền matchId nếu có
+        startActivity(intent);
     }
 
     private void fetchUserById(String userId, String token) {

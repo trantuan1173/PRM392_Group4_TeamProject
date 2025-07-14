@@ -103,12 +103,16 @@ public class LocationPermisstionActivity extends AppCompatActivity {
         UserApi userApi = ApiClient.getClient().create(UserApi.class);
         Call<ApiResponse> call = userApi.updateLocation(token, request);
 
+
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(LocationPermisstionActivity.this, "Location updated!", Toast.LENGTH_SHORT).show();
+
+                    // ✅ Quay về Dashboard sau khi update xong
                     Intent intent = new Intent(LocationPermisstionActivity.this, DashboardActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
                 } else {
@@ -122,13 +126,13 @@ public class LocationPermisstionActivity extends AppCompatActivity {
                 }
             }
 
-
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 Toast.makeText(LocationPermisstionActivity.this, "API error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     // Khi người dùng bấm "Cho phép" hoặc "Từ chối"
     @Override
