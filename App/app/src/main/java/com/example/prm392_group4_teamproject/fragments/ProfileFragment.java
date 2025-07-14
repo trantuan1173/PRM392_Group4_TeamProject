@@ -41,12 +41,25 @@ public class ProfileFragment extends Fragment {
         tvPreferences = view.findViewById(R.id.tvPreferences);
         avatarImageView = view.findViewById(R.id.avatarImageView);
         btnEditProfile = view.findViewById(R.id.btnEditProfile);
+        Button btnLogout = view.findViewById(R.id.btnLogout);
 
         getUserProfile();
 
         btnEditProfile.setOnClickListener(v -> {
             // Chuyển sang màn hình Edit Profile
             Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+            startActivity(intent);
+        });
+
+        btnLogout.setOnClickListener(v -> {
+            // Xóa token và chuyển về màn hình đăng nhập
+            requireActivity().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE)
+                    .edit()
+                    .remove("auth_token")
+                    .apply();
+
+            Intent intent = new Intent(getActivity(), com.example.prm392_group4_teamproject.LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         });
 
