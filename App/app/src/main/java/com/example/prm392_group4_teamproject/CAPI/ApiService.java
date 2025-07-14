@@ -1,5 +1,6 @@
 package com.example.prm392_group4_teamproject.CAPI;
 
+import com.example.prm392_group4_teamproject.model.CreateProfileRequest;
 import com.example.prm392_group4_teamproject.model.LoginRequest;
 import com.example.prm392_group4_teamproject.model.LoginResponse;
 import com.example.prm392_group4_teamproject.model.MatchResponse;
@@ -23,6 +24,9 @@ public interface ApiService {
 
     @PUT("/api/users/profile")
     Call<Void> updateProfile(@Body ProfileRequest request);
+
+    @PUT("/api/users/profile")
+    Call<Void> createProfile(@Header("Authorization") String token, @Body CreateProfileRequest request);
 
     @GET("/api/matches")
     Call<MatchResponse> getMatches();

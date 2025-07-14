@@ -8,7 +8,7 @@ import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.prm392_group4_teamproject.CAPI.ApiClient;
 import com.example.prm392_group4_teamproject.CAPI.ApiService;
-import com.example.prm392_group4_teamproject.model.RegisterRequest;;
+import com.example.prm392_group4_teamproject.model.RegisterRequest;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;

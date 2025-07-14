@@ -26,6 +26,9 @@ public class LoginResponse {
         private String name;
         private String email;
 
+        @SerializedName("isUpdated") // đảm bảo nếu JSON trả về là "isUpdated"
+        private boolean isUpdated;
+
         public String getId() {
             return id;
         }
@@ -37,5 +40,6 @@ public class LoginResponse {
         public String getEmail() {
             return email;
         }
+        public boolean isUpdated() {return isUpdated;}
     }
 }

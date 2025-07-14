@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     String token = response.body().getToken();
                     String userId = response.body().getUser().getId();
+                    boolean isUpdated = response.body().getUser().isUpdated();
 
                     SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
                     prefs.edit()
@@ -70,7 +71,13 @@ public class LoginActivity extends AppCompatActivity {
 
                     Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                    // 👉 Chuyển đến CreateProfileActivity nếu isUpdated == false
+                    Intent intent;
+                    if (!isUpdated) {
+                        intent = new Intent(LoginActivity.this, CreateProfileActivity.class);
+                    } else {
+                        intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                    }
                     startActivity(intent);
                     finish();
                 } else {
