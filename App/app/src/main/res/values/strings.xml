@@ -3,6 +3,10 @@
     <string name="boost_button_desc">Boost</string>
     <string name="dislike_button_desc">Dislike</string>
     <string name="like_button_desc">Like</string>
+    <string name="match_title">It\'s a Match!</string>
+    <string name="match_close_btn">Awesome!</string>
+    <string name="match_icon_desc">Match heart icon</string>
+    <string name="match_icon">Match icon</string>
     <string-array name="gender_options">
         <item>Male</item>
         <item>Female</item>

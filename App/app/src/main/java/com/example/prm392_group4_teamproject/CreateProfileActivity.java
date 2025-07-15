@@ -13,6 +13,7 @@ import com.example.prm392_group4_teamproject.CAPI.ApiClient;
 import com.example.prm392_group4_teamproject.CAPI.ApiService;
 import com.example.prm392_group4_teamproject.model.CloudinaryUploader;
 import com.example.prm392_group4_teamproject.model.CreateProfileRequest;
+import com.example.prm392_group4_teamproject.model.Photo;
 import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.slider.Slider;
 
@@ -45,11 +46,11 @@ public class CreateProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_profile_screen);
 
-        inputName = findViewById(R.id.inputName);
+//        inputName = findViewById(R.id.inputName);
         inputBio = findViewById(R.id.inputBio);
-        spinnerDay = findViewById(R.id.spinnerDay);
-        spinnerMonth = findViewById(R.id.spinnerMonth);
-        spinnerYear = findViewById(R.id.spinnerYear);
+//        spinnerDay = findViewById(R.id.spinnerDay);
+//        spinnerMonth = findViewById(R.id.spinnerMonth);
+//        spinnerYear = findViewById(R.id.spinnerYear);
         showMen = findViewById(R.id.showMen);
         showWomen = findViewById(R.id.showWomen);
         showEveryone = findViewById(R.id.showEveryone);
@@ -61,7 +62,7 @@ public class CreateProfileActivity extends AppCompatActivity {
         btnPickImage = findViewById(R.id.btnAddPhotos); // Button chọn ảnh
 
         // Setup spinner values
-        setupSpinners();
+//        setupSpinners();
 
         // Token
         SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
@@ -81,18 +82,18 @@ public class CreateProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void setupSpinners() {
-        List<String> days = new ArrayList<>();
-        for (int i = 1; i <= 31; i++) days.add(String.valueOf(i));
-        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-        List<String> years = new ArrayList<>();
-        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        for (int y = currentYear - 18; y >= 1970; y--) years.add(String.valueOf(y));
-
-        spinnerDay.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, days));
-        spinnerMonth.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, months));
-        spinnerYear.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, years));
-    }
+//    private void setupSpinners() {
+//        List<String> days = new ArrayList<>();
+//        for (int i = 1; i <= 31; i++) days.add(String.valueOf(i));
+//        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+//        List<String> years = new ArrayList<>();
+//        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+//        for (int y = currentYear - 18; y >= 1970; y--) years.add(String.valueOf(y));
+//
+//        spinnerDay.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, days));
+//        spinnerMonth.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, months));
+//        spinnerYear.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, years));
+//    }
 
     private void setupGenderButtons() {
         showMen.setOnClickListener(v -> {
@@ -127,49 +128,94 @@ public class CreateProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void submitProfile() {
-        List<Float> ageValues = sliderAgeRange.getValues();
-        int minAge = ageValues.get(0).intValue();
-        int maxAge = ageValues.get(1).intValue();
-        int maxDistance = (int) sliderDistance.getValue();
-        String bioText = inputBio.getText().toString().trim();
+//    private void submitProfile() {
+//        List<Float> ageValues = sliderAgeRange.getValues();
+//        int minAge = ageValues.get(0).intValue();
+//        int maxAge = ageValues.get(1).intValue();
+//        int maxDistance = (int) sliderDistance.getValue();
+//        String bioText = inputBio.getText().toString().trim();
+//
+//        if (uploadedImageUrl == null || uploadedImageUrl.isEmpty()) {
+//            Toast.makeText(this, "Vui lòng chọn ảnh và chờ upload xong!", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        CreateProfileRequest.AgeRange ageRange = new CreateProfileRequest.AgeRange(minAge, maxAge);
+//        CreateProfileRequest.Preferences preferences = new CreateProfileRequest.Preferences(ageRange, maxDistance, interestedIn);
+//        CreateProfileRequest request = new CreateProfileRequest(preferences, bioText, uploadedImageUrl);
+//
+//        if (token == null) {
+//            Toast.makeText(this, "No token found", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        apiService.createProfile("Bearer " + token, request).enqueue(new Callback<Void>() {
+//            @Override
+//            public void onResponse(Call<Void> call, Response<Void> response) {
+//                if (response.isSuccessful()) {
+//                    Toast.makeText(CreateProfileActivity.this, "Profile created", Toast.LENGTH_SHORT).show();
+//                    startActivity(new Intent(CreateProfileActivity.this, DashboardActivity.class));
+//                    finish();
+//                } else {
+//                    Toast.makeText(CreateProfileActivity.this, "Failed to create profile", Toast.LENGTH_SHORT).show();
+//                    Log.e("CreateProfile", "Error code: " + response.code());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Void> call, Throwable t) {
+//                Toast.makeText(CreateProfileActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//                Log.e("CreateProfile", "Network error", t);
+//            }
+//        });
+//    }
+private void submitProfile() {
+    List<Float> ageValues = sliderAgeRange.getValues();
+    int minAge = ageValues.get(0).intValue();
+    int maxAge = ageValues.get(1).intValue();
+    int maxDistance = (int) sliderDistance.getValue();
+    String bioText = inputBio.getText().toString().trim();
 
-        if (uploadedImageUrl == null || uploadedImageUrl.isEmpty()) {
-            Toast.makeText(this, "Vui lòng chọn ảnh và chờ upload xong!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        CreateProfileRequest.AgeRange ageRange = new CreateProfileRequest.AgeRange(minAge, maxAge);
-        CreateProfileRequest.Preferences preferences = new CreateProfileRequest.Preferences(ageRange, maxDistance, interestedIn);
-        CreateProfileRequest request = new CreateProfileRequest(preferences, bioText, uploadedImageUrl);
-
-        if (token == null) {
-            Toast.makeText(this, "No token found", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        apiService.createProfile("Bearer " + token, request).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(CreateProfileActivity.this, "Profile created", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(CreateProfileActivity.this, LocationPermisstionActivity.class);
-                    intent.putExtra("from", "CreateProfileActivity"); // gửi thêm nếu cần phân biệt
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast.makeText(CreateProfileActivity.this, "Failed to create profile", Toast.LENGTH_SHORT).show();
-                    Log.e("CreateProfile", "Error code: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(CreateProfileActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("CreateProfile", "Network error", t);
-            }
-        });
+    if (uploadedImageUrl == null || uploadedImageUrl.isEmpty()) {
+        Toast.makeText(this, "Vui lòng chọn ảnh và chờ upload xong!", Toast.LENGTH_SHORT).show();
+        return;
     }
+
+    // Tạo mảng photos
+    List<Photo> photos = new ArrayList<>();
+    photos.add(new Photo(uploadedImageUrl)); // bạn có thể cho chọn nhiều ảnh nếu muốn
+
+    CreateProfileRequest.AgeRange ageRange = new CreateProfileRequest.AgeRange(minAge, maxAge);
+    CreateProfileRequest.Preferences preferences = new CreateProfileRequest.Preferences(ageRange, maxDistance, interestedIn);
+    CreateProfileRequest request = new CreateProfileRequest(preferences, bioText, photos);
+
+    if (token == null) {
+        Toast.makeText(this, "No token found", Toast.LENGTH_SHORT).show();
+        return;
+    }
+
+    apiService.createProfile("Bearer " + token, request).enqueue(new Callback<Void>() {
+        @Override
+        public void onResponse(Call<Void> call, Response<Void> response) {
+            if (response.isSuccessful()) {
+                Toast.makeText(CreateProfileActivity.this, "Profile created", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CreateProfileActivity.this, LocationPermisstionActivity.class);
+                intent.putExtra("from", "CreateProfileActivity"); // gửi thêm nếu cần phân biệt
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(CreateProfileActivity.this, "Failed to create profile", Toast.LENGTH_SHORT).show();
+                Log.e("CreateProfile", "Error code: " + response.code());
+            }
+        }
+
+        @Override
+        public void onFailure(Call<Void> call, Throwable t) {
+            Toast.makeText(CreateProfileActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e("CreateProfile", "Network error", t);
+        }
+    });
+}
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

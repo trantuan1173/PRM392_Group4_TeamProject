@@ -27,6 +27,10 @@ public class arrayAdapter extends RecyclerView.Adapter<arrayAdapter.ViewHolder> 
         this.context = context;
     }
 
+    public cards getItem(int position) {
+        return userList.get(position);
+    }
+
     @Override
     public arrayAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_card, parent, false);
